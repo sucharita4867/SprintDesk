@@ -1,11 +1,25 @@
 import { create } from "zustand";
 import { seedTasks } from "../data/seedTasks";
-import type { Task } from "../types/task";
+import type { Task } from "../types/Task";
 
 interface BoardStore {
   tasks: Task[];
+  addTask: (column: Task["column"]) => void;
 }
 
-export const useBoardStore = create<BoardStore>(() => ({
+export const useBoardStore = create<BoardStore>((set) => ({
   tasks: seedTasks,
+  addTask: (column) =>
+    set((state) => ({
+      tasks: [
+        ...state.tasks,
+        {
+          id: Date.now().toString(),
+          title: "New Task",
+          description: "",
+          priority: "low",
+          column,
+        },
+      ],
+    })),
 }));

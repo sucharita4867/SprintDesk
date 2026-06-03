@@ -19,11 +19,14 @@ function App() {
         padding: "20px",
       }}
     >
-      <Column title="Backlog" tasks={backlogTasks} />
+      <Column title="Backlog" tasks={backlogTasks} columnType="backlog" />
+      <Column
+        title="In Progress"
+        tasks={inProgressTasks}
+        columnType="inProgress"
+      />
 
-      <Column title="In Progress" tasks={inProgressTasks} />
-
-      <Column title="Done" tasks={doneTasks} />
+      <Column title="Done" tasks={doneTasks} columnType="done" />
     </div>
   );
 }
