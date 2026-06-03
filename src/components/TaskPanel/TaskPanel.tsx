@@ -7,18 +7,14 @@ interface TaskPanelProps {
 }
 
 function TaskPanel({ task }: TaskPanelProps) {
-  const updateTask = useBoardStore(
-    (state) => state.updateTask
-  );
-const [title, setTitle] = useState(task?.title || "");
-const [description, setDescription] = useState(
-  task?.description || ""
-);
-const [priority, setPriority] = useState(
-  task?.priority || "low"
-);
+  const updateTask = useBoardStore((state) => state.updateTask);
+  const moveTask = useBoardStore((state) => state.moveTask);
 
-if (!task) return null;
+  const [title, setTitle] = useState(task?.title || "");
+  const [description, setDescription] = useState(task?.description || "");
+  const [priority, setPriority] = useState(task?.priority || "low");
+
+  if (!task) return null;
 
   const handleSave = () => {
     updateTask(task.id, {
@@ -48,9 +44,7 @@ if (!task) return null;
         <input
           type="text"
           value={title}
-          onChange={(e) =>
-            setTitle(e.target.value)
-          }
+          onChange={(e) => setTitle(e.target.value)}
           style={{
             width: "100%",
             padding: "8px",
@@ -64,9 +58,7 @@ if (!task) return null;
         <label>Description</label>
         <textarea
           value={description}
-          onChange={(e) =>
-            setDescription(e.target.value)
-          }
+          onChange={(e) => setDescription(e.target.value)}
           style={{
             width: "100%",
             minHeight: "120px",
@@ -83,12 +75,7 @@ if (!task) return null;
         <select
           value={priority}
           onChange={(e) =>
-            setPriority(
-              e.target.value as
-                | "low"
-                | "medium"
-                | "high"
-            )
+            setPriority(e.target.value as "low" | "medium" | "high")
           }
           style={{
             width: "100%",
@@ -102,10 +89,33 @@ if (!task) return null;
           <option value="high">High</option>
         </select>
       </div>
+      {/* Move To */}
+      <div>
+        <label>Move To</label>
 
-      <button onClick={handleSave}>
-        Save
-      </button>
+        <select
+          defaultValue=""
+          onChange={(e) => {
+            moveTask(task.id, e.target.value as Task["column"]);
+          }}
+        >
+          <option value="" disabled>
+            Select Column
+          </option>
+
+          {task.column !== "backlog" && (
+            <option value="backlog">Backlog</option>
+          )}
+
+          {task.column !== "inProgress" && (
+            <option value="inProgress">In Progress</option>
+          )}
+
+          {task.column !== "done" && <option value="done">Done</option>}
+        </select>
+      </div>
+
+      <button onClick={handleSave}>Save</button>
     </div>
   );
 }
