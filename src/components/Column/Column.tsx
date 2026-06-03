@@ -6,14 +6,15 @@ interface ColumnProps {
   title: string;
   tasks: Task[];
   columnType: Task["column"];
+  onTaskClick: (task: Task) => void;
 }
-function Column({ title, tasks, columnType }: ColumnProps) {
+function Column({ title, tasks, columnType, onTaskClick }: ColumnProps) {
   const addTask = useBoardStore((state) => state.addTask);
 
   return (
     <div
       style={{
-        width: "300px",
+        width: "200px",
         minHeight: "400px",
         border: "1px solid #ccc",
         padding: "15px",
@@ -27,7 +28,7 @@ function Column({ title, tasks, columnType }: ColumnProps) {
       <button onClick={() => addTask(columnType)}>Add Task</button>
 
       {tasks.map((task) => (
-        <TaskCard key={task.id} task={task} />
+        <TaskCard key={task.id} task={task} onClick={() => onTaskClick(task)} />
       ))}
     </div>
   );

@@ -6,6 +6,7 @@ interface BoardStore {
   tasks: Task[];
   addTask: (column: Task["column"]) => void;
   deleteTask: (id: string) => void;
+  updateTask: (id: string, updatedTask: Partial<Task>) => void;
 }
 
 export const useBoardStore = create<BoardStore>((set) => ({
@@ -26,5 +27,11 @@ export const useBoardStore = create<BoardStore>((set) => ({
   deleteTask: (id) =>
     set((state) => ({
       tasks: state.tasks.filter((task) => task.id !== id),
+    })),
+  updateTask: (id, updatedTask) =>
+    set((state) => ({
+      tasks: state.tasks.map((task) =>
+        task.id === id ? { ...task, ...updatedTask } : task,
+      ),
     })),
 }));
