@@ -1,16 +1,15 @@
 import { useState } from "react";
-import type { Task } from "./types/Task";
 import Column from "./components/Column/Column";
-import { useBoardStore } from "./store/BoardStore";
 import TaskPanel from "./components/TaskPanel/TaskPanel";
+import { useBoardStore } from "./store/BoardStore";
+import type { Task } from "./types/Task";
 
 function App() {
-  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const tasks = useBoardStore((state) => state.tasks);
 
-  // search state
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
+
   const [searchText, setSearchText] = useState("");
-  // priorityFilter
   const [priorityFilter, setPriorityFilter] = useState("all");
 
   const filteredTasks = tasks.filter((task) => {
@@ -34,36 +33,61 @@ function App() {
 
   const doneTasks = filteredTasks.filter((task) => task.column === "done");
 
+  // Card Click Handler
   const handleTaskClick = (task: Task) => {
     setSelectedTask(task);
-    console.log("Selected Task:", task);
+  };
+
+  // Clear Filters
+  const handleClearFilters = () => {
+    setSearchText("");
+    setPriorityFilter("all");
   };
 
   return (
     <>
-      {/* search  */}
-      <input
-        type="text"
+      <div
         style={{
-          width: "50%",
-          padding: "10px",
-          marginBottom: "20px",
-          fontSize: "16px",
+          padding: "20px",
+          display: "flex",
+          gap: "10px",
+          alignItems: "center",
         }}
-        placeholder="Search tasks title..."
-        value={searchText}
-        onChange={(e) => setSearchText(e.target.value)}
-      />
-      {/* priorityFilter */}
-      <select
-        value={priorityFilter}
-        onChange={(e) => setPriorityFilter(e.target.value)}
       >
-        <option value="all">All</option>
-        <option value="low">Low</option>
-        <option value="medium">Medium</option>
-        <option value="high">High</option>
-      </select>
+        <input
+          type="text"
+          placeholder="Search tasks..."
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+          style={{
+            width: "300px",
+            padding: "10px",
+          }}
+        />
+
+        <select
+          value={priorityFilter}
+          onChange={(e) => setPriorityFilter(e.target.value)}
+        >
+          <option value="all">All Priorities</option>
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+        </select>
+
+        <button onClick={handleClearFilters}>Clear Filters</button>
+      </div>
+
+      {filteredTasks.length === 0 && (
+        <div
+          style={{
+            padding: "20px",
+          }}
+        >
+          <h2>No tasks match your filters.</h2>
+        </div>
+      )}
+
       <div
         style={{
           display: "flex",

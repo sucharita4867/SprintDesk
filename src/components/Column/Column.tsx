@@ -8,13 +8,22 @@ interface ColumnProps {
   columnType: Task["column"];
   onTaskClick: (task: Task) => void;
 }
+
 function Column({ title, tasks, columnType, onTaskClick }: ColumnProps) {
   const addTask = useBoardStore((state) => state.addTask);
 
+  const moveTask = useBoardStore((state) => state.moveTask);
+
   return (
     <div
+      onDragOver={(e) => e.preventDefault()}
+      onDrop={(e) => {
+        const taskId = e.dataTransfer.getData("taskId");
+
+        moveTask(taskId, columnType);
+      }}
       style={{
-        width: "200px",
+        width: "250px",
         minHeight: "400px",
         border: "1px solid #ccc",
         padding: "15px",

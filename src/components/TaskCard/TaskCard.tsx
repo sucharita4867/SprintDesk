@@ -10,13 +10,15 @@ function TaskCard({ task, onClick }: TaskCardProps) {
   const deleteTask = useBoardStore((state) => state.deleteTask);
   return (
     <div
+      draggable
+      onDragStart={(e) => e.dataTransfer.setData("taskId", task.id)}
       onClick={onClick}
       style={{
-        padding: "10px",
-        margin: "10px 0",
-        backgroundColor: "#f9f9f9",
         border: "1px solid #ddd",
-        borderRadius: "5px",
+        padding: "10px",
+        marginBottom: "10px",
+        borderRadius: "8px",
+        cursor: "grab",
       }}
     >
       <h4>{task.title}</h4>
