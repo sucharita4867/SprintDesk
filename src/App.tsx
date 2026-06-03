@@ -1,15 +1,29 @@
+// import { useBoardStore } from "./store/boardStore";
+import Column from "./components/Column/Column";
 import { useBoardStore } from "./store/BoardStore";
 
 function App() {
   const tasks = useBoardStore((state) => state.tasks);
 
-  return (
-    <div>
-      <h1>SprintDesk</h1>
+  const backlogTasks = tasks.filter((task) => task.column === "backlog");
 
-      {tasks.map((task) => (
-        <p key={task.id}>{task.title}</p>
-      ))}
+  const inProgressTasks = tasks.filter((task) => task.column === "inProgress");
+
+  const doneTasks = tasks.filter((task) => task.column === "done");
+
+  return (
+    <div
+      style={{
+        display: "flex",
+        gap: "20px",
+        padding: "20px",
+      }}
+    >
+      <Column title="Backlog" tasks={backlogTasks} />
+
+      <Column title="In Progress" tasks={inProgressTasks} />
+
+      <Column title="Done" tasks={doneTasks} />
     </div>
   );
 }
