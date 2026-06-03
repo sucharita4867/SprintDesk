@@ -10,10 +10,19 @@ function App() {
 
   // search state
   const [searchText, setSearchText] = useState("");
+  // priorityFilter
+  const [priorityFilter, setPriorityFilter] = useState("all");
 
-  const filteredTasks = tasks.filter((task) =>
-    task.title.toLowerCase().includes(searchText.toLowerCase()),
-  );
+  const filteredTasks = tasks.filter((task) => {
+    const matchesSearch = task.title
+      .toLowerCase()
+      .includes(searchText.toLowerCase());
+
+    const matchesPriority =
+      priorityFilter === "all" || task.priority === priorityFilter;
+
+    return matchesSearch && matchesPriority;
+  });
 
   const backlogTasks = filteredTasks.filter(
     (task) => task.column === "backlog",
@@ -32,6 +41,7 @@ function App() {
 
   return (
     <>
+      {/* search  */}
       <input
         type="text"
         style={{
@@ -44,6 +54,16 @@ function App() {
         value={searchText}
         onChange={(e) => setSearchText(e.target.value)}
       />
+      {/* priorityFilter */}
+      <select
+        value={priorityFilter}
+        onChange={(e) => setPriorityFilter(e.target.value)}
+      >
+        <option value="all">All</option>
+        <option value="low">Low</option>
+        <option value="medium">Medium</option>
+        <option value="high">High</option>
+      </select>
       <div
         style={{
           display: "flex",
