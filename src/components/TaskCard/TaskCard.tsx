@@ -1,3 +1,4 @@
+import { useBoardStore } from "../../store/BoardStore";
 import type { Task } from "../../types/Task";
 
 interface TaskCardProps {
@@ -5,6 +6,7 @@ interface TaskCardProps {
 }
 
 function TaskCard({ task }: TaskCardProps) {
+  const deleteTask = useBoardStore((state) => state.deleteTask);
   return (
     <div
       style={{
@@ -16,6 +18,7 @@ function TaskCard({ task }: TaskCardProps) {
       }}
     >
       <h4>{task.title}</h4>
+      <button onClick={() => deleteTask(task.id)}>Delete Task</button>
     </div>
   );
 }

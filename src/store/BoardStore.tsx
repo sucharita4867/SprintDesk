@@ -5,6 +5,7 @@ import type { Task } from "../types/Task";
 interface BoardStore {
   tasks: Task[];
   addTask: (column: Task["column"]) => void;
+  deleteTask: (id: string) => void;
 }
 
 export const useBoardStore = create<BoardStore>((set) => ({
@@ -21,5 +22,9 @@ export const useBoardStore = create<BoardStore>((set) => ({
           column,
         },
       ],
+    })),
+  deleteTask: (id) =>
+    set((state) => ({
+      tasks: state.tasks.filter((task) => task.id !== id),
     })),
 }));
