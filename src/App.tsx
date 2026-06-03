@@ -8,9 +8,22 @@ function App() {
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const tasks = useBoardStore((state) => state.tasks);
 
-  const backlogTasks = tasks.filter((task) => task.column === "backlog");
-  const inProgressTasks = tasks.filter((task) => task.column === "inProgress");
-  const doneTasks = tasks.filter((task) => task.column === "done");
+  // search state
+  const [searchText, setSearchText] = useState("");
+
+  const filteredTasks = tasks.filter((task) =>
+    task.title.toLowerCase().includes(searchText.toLowerCase()),
+  );
+
+  const backlogTasks = filteredTasks.filter(
+    (task) => task.column === "backlog",
+  );
+
+  const inProgressTasks = filteredTasks.filter(
+    (task) => task.column === "inProgress",
+  );
+
+  const doneTasks = filteredTasks.filter((task) => task.column === "done");
 
   const handleTaskClick = (task: Task) => {
     setSelectedTask(task);
@@ -19,6 +32,18 @@ function App() {
 
   return (
     <>
+      <input
+        type="text"
+        style={{
+          width: "50%",
+          padding: "10px",
+          marginBottom: "20px",
+          fontSize: "16px",
+        }}
+        placeholder="Search tasks title..."
+        value={searchText}
+        onChange={(e) => setSearchText(e.target.value)}
+      />
       <div
         style={{
           display: "flex",
@@ -50,7 +75,7 @@ function App() {
 
       <TaskPanel task={selectedTask} />
     </>
-  )
+  );
 }
 
 export default App;
