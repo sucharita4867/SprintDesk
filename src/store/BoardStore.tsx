@@ -13,6 +13,7 @@ interface BoardStore {
   moveTask: (taskId: string, column: Task["column"]) => void;
   reorderTask: (taskId: string, newColumn: Task["column"]) => void;
   assignees: Assignee[];
+  assignTask: (taskId: string, assigneeId: string) => void;
 }
 
 export const useBoardStore = create<BoardStore>()(
@@ -53,6 +54,12 @@ export const useBoardStore = create<BoardStore>()(
         set((state) => ({
           tasks: state.tasks.map((task) =>
             task.id === taskId ? { ...task, column: newColumn } : task,
+          ),
+        })),
+      assignTask: (taskId, assigneeId) =>
+        set((state) => ({
+          tasks: state.tasks.map((task) =>
+            task.id === taskId ? { ...task, assigneeId } : task,
           ),
         })),
     }),

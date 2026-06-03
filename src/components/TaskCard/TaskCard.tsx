@@ -23,7 +23,14 @@ function TaskCard({ task, onClick }: TaskCardProps) {
     >
       <h4>{task.title}</h4>
       <h4>{task.description}</h4>
-      <button onClick={() => deleteTask(task.id)}>Delete Task</button>
+      <button
+        onClick={(e) => {
+          e.stopPropagation();
+          deleteTask(task.id);
+        }}
+      >
+        Delete Task
+      </button>
     </div>
   );
 }

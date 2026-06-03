@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useBoardStore } from "../../store/BoardStore";
 import type { Task } from "../../types/Task";
 
@@ -10,10 +10,30 @@ function TaskPanel({ task }: TaskPanelProps) {
   const updateTask = useBoardStore((state) => state.updateTask);
   const moveTask = useBoardStore((state) => state.moveTask);
 
-  const [title, setTitle] = useState(task?.title || "");
-  const [description, setDescription] = useState(task?.description || "");
-  const [priority, setPriority] = useState(task?.priority || "low");
+  const assignees = useBoardStore((state) => state.assignees);
 
+  const assignTask = useBoardStore((state) => state.assignTask);
+
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [priority, setPriority] = useState<"low" | "medium" | "high">("low");
+
+  const [assigneeId, setAssigneeId] = useState("");
+
+  useEffect(() => {
+    if (!task) {
+      setTitle("");
+      setDescription("");
+      setPriority("low");
+      setAssigneeId("");
+      return;
+    }
+
+    setTitle(task.title || "");
+    setDescription(task.description || "");
+    setPriority(task.priority || "low");
+    setAssigneeId(task.assigneeId || "");
+  }, [task]);
   if (!task) return null;
 
   const handleSave = () => {
@@ -21,6 +41,7 @@ function TaskPanel({ task }: TaskPanelProps) {
       title,
       description,
       priority,
+      assigneeId,
     });
   };
 
@@ -35,12 +56,15 @@ function TaskPanel({ task }: TaskPanelProps) {
         background: "white",
         borderLeft: "1px solid #ccc",
         padding: "20px",
+        overflowY: "auto",
       }}
     >
       <h2>Task Details</h2>
 
+      {/* Title */}
       <div>
         <label>Title</label>
+
         <input
           type="text"
           value={title}
@@ -54,8 +78,10 @@ function TaskPanel({ task }: TaskPanelProps) {
         />
       </div>
 
+      {/* Description */}
       <div>
         <label>Description</label>
+
         <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
@@ -69,6 +95,7 @@ function TaskPanel({ task }: TaskPanelProps) {
         />
       </div>
 
+      {/* Priority */}
       <div>
         <label>Priority</label>
 
@@ -89,14 +116,19 @@ function TaskPanel({ task }: TaskPanelProps) {
           <option value="high">High</option>
         </select>
       </div>
+
       {/* Move To */}
       <div>
         <label>Move To</label>
 
         <select
           defaultValue=""
-          onChange={(e) => {
-            moveTask(task.id, e.target.value as Task["column"]);
+          onChange={(e) => moveTask(task.id, e.target.value as Task["column"])}
+          style={{
+            width: "100%",
+            padding: "8px",
+            marginTop: "5px",
+            marginBottom: "15px",
           }}
         >
           <option value="" disabled>
@@ -112,6 +144,34 @@ function TaskPanel({ task }: TaskPanelProps) {
           )}
 
           {task.column !== "done" && <option value="done">Done</option>}
+        </select>
+      </div>
+
+      {/* Assignee */}
+      <div>
+        <label>Assignee</label>
+
+        <select
+          value={assigneeId}
+          onChange={(e) => {
+            setAssigneeId(e.target.value);
+
+            assignTask(task.id, e.target.value);
+          }}
+          style={{
+            width: "100%",
+            padding: "8px",
+            marginTop: "5px",
+            marginBottom: "15px",
+          }}
+        >
+          <option value="">Unassigned</option>
+
+          {assignees.map((assignee) => (
+            <option key={assignee.id} value={assignee.id}>
+              {assignee.name}
+            </option>
+          ))}
         </select>
       </div>
 
