@@ -2,6 +2,8 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { seedTasks } from "../data/seedTasks";
 import type { Task } from "../types/Task";
+import type { Assignee } from "../types/Assignee";
+import { seedAssignees } from "../data/seedAssignees";
 
 interface BoardStore {
   tasks: Task[];
@@ -10,12 +12,14 @@ interface BoardStore {
   updateTask: (id: string, updatedTask: Partial<Task>) => void;
   moveTask: (taskId: string, column: Task["column"]) => void;
   reorderTask: (taskId: string, newColumn: Task["column"]) => void;
+  assignees: Assignee[];
 }
 
 export const useBoardStore = create<BoardStore>()(
   persist(
     (set) => ({
       tasks: seedTasks,
+      assignees: seedAssignees,
       addTask: (column) =>
         set((state) => ({
           tasks: [
