@@ -7,11 +7,17 @@ interface ColumnProps {
   tasks: Task[];
   columnType: Task["column"];
   onTaskClick: (task: Task) => void;
+  indicatorColor: string; 
 }
 
-function Column({ title, tasks, columnType, onTaskClick }: ColumnProps) {
+function Column({
+  title,
+  tasks,
+  columnType,
+  onTaskClick,
+  indicatorColor,
+}: ColumnProps) {
   const addTask = useBoardStore((state) => state.addTask);
-
   const moveTask = useBoardStore((state) => state.moveTask);
 
   return (
@@ -19,13 +25,12 @@ function Column({ title, tasks, columnType, onTaskClick }: ColumnProps) {
       onDragOver={(e) => e.preventDefault()}
       onDrop={(e) => {
         const taskId = e.dataTransfer.getData("taskId");
-
         moveTask(taskId, columnType);
       }}
       style={{
         width: "250px",
         minHeight: "400px",
-        border: "1px solid #ccc",
+        border: `1px solid ${indicatorColor || "#ccc"}`, 
         padding: "15px",
         borderRadius: "10px",
       }}
@@ -33,9 +38,7 @@ function Column({ title, tasks, columnType, onTaskClick }: ColumnProps) {
       <h2>
         {title} ({tasks.length})
       </h2>
-
       <button onClick={() => addTask(columnType)}>Add Task</button>
-
       {tasks.map((task) => (
         <TaskCard key={task.id} task={task} onClick={() => onTaskClick(task)} />
       ))}
