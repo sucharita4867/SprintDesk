@@ -12,6 +12,10 @@ function App() {
   const [searchText, setSearchText] = useState("");
   const [priorityFilter, setPriorityFilter] = useState("all");
 
+  const [assigneeFilter, setAssigneeFilter] = useState("all");
+
+  const [tagFilter, setTagFilter] = useState("all");
+
   const filteredTasks = tasks.filter((task) => {
     const matchesSearch = task.title
       .toLowerCase()
@@ -20,7 +24,12 @@ function App() {
     const matchesPriority =
       priorityFilter === "all" || task.priority === priorityFilter;
 
-    return matchesSearch && matchesPriority;
+    const matchesAssignee =
+      assigneeFilter === "all" || task.assigneeId === assigneeFilter;
+
+    const matchesTag = tagFilter === "all" || task.tagId === tagFilter;
+
+    return matchesSearch && matchesPriority && matchesAssignee && matchesTag;
   });
 
   const backlogTasks = filteredTasks.filter(
@@ -33,6 +42,10 @@ function App() {
 
   const doneTasks = filteredTasks.filter((task) => task.column === "done");
 
+  const assignees = useBoardStore((state) => state.assignees);
+
+  const tags = useBoardStore((state) => state.tags);
+
   // Card Click Handler
   const handleTaskClick = (task: Task) => {
     setSelectedTask(task);
@@ -42,6 +55,8 @@ function App() {
   const handleClearFilters = () => {
     setSearchText("");
     setPriorityFilter("all");
+    setAssigneeFilter("all");
+    setTagFilter("all");
   };
 
   return (
@@ -73,6 +88,30 @@ function App() {
           <option value="low">Low</option>
           <option value="medium">Medium</option>
           <option value="high">High</option>
+        </select>
+
+        <select
+          value={assigneeFilter}
+          onChange={(e) => setAssigneeFilter(e.target.value)}
+        >
+          <option value="all">All Assignees</option>
+          {assignees.map((assignee) => (
+            <option key={assignee.id} value={assignee.id}>
+              {assignee.name}
+            </option>
+          ))}
+        </select>
+
+        <select
+          value={tagFilter}
+          onChange={(e) => setTagFilter(e.target.value)}
+        >
+          <option value="all">All Tags</option>
+          {tags.map((tag) => (
+            <option key={tag.id} value={tag.id}>
+              {tag.name}
+            </option>
+          ))}
         </select>
 
         <button onClick={handleClearFilters}>Clear Filters</button>
