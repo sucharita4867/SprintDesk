@@ -7,9 +7,9 @@ import {
   MenuItem,
   Button,
   Typography,
-  Grid,
   InputAdornment,
 } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
 import Column from "./components/Column/Column";
 import TaskPanel from "./components/TaskPanel/TaskPanel";
 import { useBoardStore } from "./store/BoardStore";
@@ -83,21 +83,58 @@ function App() {
     setTagFilter("all");
   };
 
+  const isPanelOpen = selectedTask !== null;
+
   return (
     <Box
-      sx={{ minHeight: "100vh", bgcolor: "#15161e", color: "#f5f5f7", p: 4 }}
+      sx={{
+        minHeight: "100vh",
+        bgcolor: "#15161e",
+        color: "#f5f5f7",
+        p: 4,
+        pt: 2,
+      }}
     >
-      <Stack
-        direction={{ xs: "column", md: "row" }}
-        spacing={2}
-        alignItems="center"
+      <Box
         sx={{
-          bgcolor: "#1e1f29",
-          p: 2,
-          borderRadius: 3,
+          borderBottom: "1px solid #2b2d3d",
+          pb: 2,
+          mb: 3,
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <Typography
+          variant="h5"
+          sx={{
+            color: "#fff",
+            fontWeight: 700,
+            letterSpacing: "0.5px",
+            background: "linear-gradient(45deg, #3b82f6, #10b981)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}
+        >
+          SprintDesk
+        </Typography>
+      </Box>
+
+      {/* SEARCH AND FILTER BAR CONTROLLER */}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: window.innerWidth < 900 ? "column" : "row",
+          gap: "16px",
+          alignItems: "center",
+          backgroundColor: "#1e1f29",
+          padding: "16px",
+          borderRadius: "12px",
           border: "1px solid #2b2d3d",
-          mb: 4,
+          marginBottom: "32px",
           flexWrap: "wrap",
+          width: isPanelOpen ? "calc(100% - 380px)" : "100%",
+          transition: "width 0.3s ease",
+          boxSizing: "border-box",
         }}
       >
         <TextField
@@ -105,24 +142,14 @@ function App() {
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
           size="small"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start" sx={{ color: "#64748b" }}>
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <circle cx="11" cy="11" r="8"></circle>
-                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
-              </InputAdornment>
-            ),
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon sx={{ color: "#64748b" }} />
+                </InputAdornment>
+              ),
+            },
           }}
           sx={{
             width: { xs: "100%", md: "260px" },
@@ -225,14 +252,13 @@ function App() {
           </Select>
         </Stack>
 
-        <Stack
-          direction="row"
-          alignItems="center"
-          spacing={2}
-          sx={{
-            ml: { md: "auto" },
-            width: { xs: "100%", md: "auto" },
+        <div
+          style={{
+            display: "flex",
             justifyContent: "space-between",
+            marginLeft: window.innerWidth < 900 ? "0px" : "auto",
+            width: window.innerWidth < 900 ? "100%" : "auto",
+            boxSizing: "border-box",
           }}
         >
           <Button
@@ -255,15 +281,25 @@ function App() {
           </Button>
           <Typography
             variant="body2"
-            sx={{ color: "#64748b", fontWeight: 500, whiteSpace: "nowrap" }}
+            sx={{
+              color: "#64748b",
+              fontWeight: 500,
+              whiteSpace: "nowrap",
+              ml: 2,
+              display: "flex",
+              alignItems: "center",
+            }}
           >
             Active Filters:{" "}
-            <Box component="span" sx={{ color: "#3b82f6", fontWeight: 600 }}>
+            <Box
+              component="span"
+              sx={{ color: "#3b82f6", fontWeight: 600, ml: 0.5 }}
+            >
               {activeFilterCount}
             </Box>
           </Typography>
-        </Stack>
-      </Stack>
+        </div>
+      </div>
 
       {filteredTasks.length === 0 && (
         <Box
@@ -274,6 +310,8 @@ function App() {
             borderRadius: 4,
             border: "1px dashed #2b2d3d",
             mb: 4,
+            width: isPanelOpen ? "calc(100% - 380px)" : "100%",
+            transition: "width 0.3s ease",
           }}
         >
           <Typography variant="h6" sx={{ color: "#94a3b8" }}>
@@ -282,37 +320,41 @@ function App() {
         </Box>
       )}
 
-      <Grid container spacing={3} alignItems="start">
-        <Grid item xs={12} md={4}>
-          <Column
-            title="Backlog"
-            tasks={backlogTasks}
-            columnType="backlog"
-            onTaskClick={handleTaskClick}
-            indicatorColor="#94a3b8"
-          />
-        </Grid>
-        <Grid item xs={12} md={4}>
-          <Column
-            title="In Progress"
-            tasks={inProgressTasks}
-            columnType="inProgress"
-            onTaskClick={handleTaskClick}
-            indicatorColor="#ef4444"
-          />
-        </Grid>
-        <Grid item xs={12} md={4}>
-          <Column
-            title="Done"
-            tasks={doneTasks}
-            columnType="done"
-            onTaskClick={handleTaskClick}
-            indicatorColor="#10b981"
-          />
-        </Grid>
-      </Grid>
+      {/* DYNAMIC COLUMNS CONTAINER BLOCK */}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: window.innerWidth < 900 ? "column" : "row",
+          gap: "24px",
+          alignItems: "flex-start",
+          width: isPanelOpen ? "calc(100% - 380px)" : "100%",
+          transition: "width 0.3s ease",
+        }}
+      >
+        <Column
+          title="Backlog"
+          tasks={backlogTasks}
+          columnType="backlog"
+          onTaskClick={handleTaskClick}
+          indicatorColor="#94a3b8"
+        />
+        <Column
+          title="In Progress"
+          tasks={inProgressTasks}
+          columnType="inProgress"
+          onTaskClick={handleTaskClick}
+          indicatorColor="#ef4444"
+        />
+        <Column
+          title="Done"
+          tasks={doneTasks}
+          columnType="done"
+          onTaskClick={handleTaskClick}
+          indicatorColor="#10b981"
+        />
+      </div>
 
-      <TaskPanel task={selectedTask} />
+      <TaskPanel task={selectedTask} onClose={() => setSelectedTask(null)} />
     </Box>
   );
 }

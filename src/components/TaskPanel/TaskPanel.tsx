@@ -13,9 +13,10 @@ import {
 
 interface TaskPanelProps {
   task: Task | null;
+  onClose: () => void;
 }
 
-function TaskPanel({ task }: TaskPanelProps) {
+function TaskPanel({ task, onClose }: TaskPanelProps) {
   const updateTask = useBoardStore((state) => state.updateTask);
   const moveTask = useBoardStore((state) => state.moveTask);
   const assignees = useBoardStore((state) => state.assignees);
@@ -30,7 +31,6 @@ function TaskPanel({ task }: TaskPanelProps) {
   const [tagId, setTagId] = useState("");
   const [dueDate, setDueDate] = useState("");
 
-  // Local toggle handling for standard visibility logic
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -58,7 +58,7 @@ function TaskPanel({ task }: TaskPanelProps) {
       tagId,
       dueDate,
     });
-    setIsOpen(false);
+    onClose();
   };
 
   return (
@@ -80,21 +80,42 @@ function TaskPanel({ task }: TaskPanelProps) {
         gap: 2.5,
       }}
     >
-      <Stack direction="row" justifyContent="space-between" alignItems="center">
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        {" "}
         <Typography variant="h6" sx={{ color: "#fff", fontWeight: 600 }}>
           Task Details
         </Typography>
         <Button
-          onClick={() => setIsOpen(false)}
-          sx={{ minWidth: "auto", color: "#64748b", p: 0, fontSize: "20px" }}
+          onClick={onClose}
+          sx={{
+            minWidth: "auto",
+            color: "#64748b",
+            p: 0,
+            fontSize: "22px",
+            "&:hover": { color: "#ef4444" },
+          }}
         >
           &times;
         </Button>
-      </Stack>
+      </div>
 
-      <Stack spacing={2} sx={{ flex: 1 }}>
+      <Stack spacing={2.5} sx={{ flex: 1 }}>
         <Box>
-          <Typography sx={{ color: "#94a3b8", fontSize: "12px", mb: 0.5 }}>
+          <Typography
+            sx={{
+              color: "#94a3b8",
+              fontSize: "12px",
+              mb: 0.8,
+              fontWeight: 500,
+            }}
+          >
             Title
           </Typography>
           <TextField
@@ -104,15 +125,26 @@ function TaskPanel({ task }: TaskPanelProps) {
             onChange={(e) => setTitle(e.target.value)}
             sx={{
               bgcolor: "#252632",
-              borderRadius: 1.5,
+              borderRadius: 2,
               "& .MuiOutlinedInput-notchedOutline": { borderColor: "#2b2d3d" },
+              "& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
+                { borderColor: "#475569" },
+              "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                { borderColor: "#3b82f6" },
               "& .MuiInputBase-input": { color: "#fff", fontSize: "14px" },
             }}
           />
         </Box>
 
         <Box>
-          <Typography sx={{ color: "#94a3b8", fontSize: "12px", mb: 0.5 }}>
+          <Typography
+            sx={{
+              color: "#94a3b8",
+              fontSize: "12px",
+              mb: 0.8,
+              fontWeight: 500,
+            }}
+          >
             Description
           </Typography>
           <TextField
@@ -123,27 +155,45 @@ function TaskPanel({ task }: TaskPanelProps) {
             onChange={(e) => setDescription(e.target.value)}
             sx={{
               bgcolor: "#252632",
-              borderRadius: 1.5,
+              borderRadius: 2,
               "& .MuiOutlinedInput-notchedOutline": { borderColor: "#2b2d3d" },
+              "& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
+                { borderColor: "#475569" },
+              "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                { borderColor: "#3b82f6" },
               "& .MuiInputBase-input": { color: "#fff", fontSize: "14px" },
             }}
           />
         </Box>
 
         <Box>
-          <Typography sx={{ color: "#94a3b8", fontSize: "12px", mb: 0.5 }}>
+          <Typography
+            sx={{
+              color: "#94a3b8",
+              fontSize: "12px",
+              mb: 0.8,
+              fontWeight: 500,
+            }}
+          >
             Priority
           </Typography>
           <Select
             fullWidth
             size="small"
             value={priority}
-            onChange={(e) => setPriority(e.target.value as any)}
+            onChange={(e) => setPriority(e.target.value as Task["priority"])}
             sx={{
               bgcolor: "#252632",
               color: "#fff",
-              borderRadius: 1.5,
+              borderRadius: 2,
+              fontSize: "14px",
               "& .MuiOutlinedInput-notchedOutline": { borderColor: "#2b2d3d" },
+              "&:hover .MuiOutlinedInput-notchedOutline": {
+                borderColor: "#475569",
+              },
+              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                borderColor: "#3b82f6",
+              },
             }}
           >
             <MenuItem value="low">Low</MenuItem>
@@ -153,7 +203,14 @@ function TaskPanel({ task }: TaskPanelProps) {
         </Box>
 
         <Box>
-          <Typography sx={{ color: "#94a3b8", fontSize: "12px", mb: 0.5 }}>
+          <Typography
+            sx={{
+              color: "#94a3b8",
+              fontSize: "12px",
+              mb: 0.8,
+              fontWeight: 500,
+            }}
+          >
             Due Date
           </Typography>
           <TextField
@@ -164,28 +221,45 @@ function TaskPanel({ task }: TaskPanelProps) {
             onChange={(e) => setDueDate(e.target.value)}
             sx={{
               bgcolor: "#252632",
-              borderRadius: 1.5,
+              borderRadius: 2,
               "& .MuiOutlinedInput-notchedOutline": { borderColor: "#2b2d3d" },
+              "& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline":
+                { borderColor: "#475569" },
+              "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline":
+                { borderColor: "#3b82f6" },
               "& .MuiInputBase-input": { color: "#fff", fontSize: "14px" },
             }}
           />
         </Box>
 
         <Box>
-          <Typography sx={{ color: "#94a3b8", fontSize: "12px", mb: 0.5 }}>
-            Move To
+          <Typography
+            sx={{
+              color: "#94a3b8",
+              fontSize: "12px",
+              mb: 0.8,
+              fontWeight: 500,
+            }}
+          >
+            Move To Stage
           </Typography>
           <Select
             fullWidth
             size="small"
             defaultValue=""
-            onChange={(e) => moveTask(task.id, e.target.value as any)}
+            onChange={(e) =>
+              moveTask(task.id, e.target.value as Task["column"])
+            }
             displayEmpty
             sx={{
               bgcolor: "#252632",
               color: "#fff",
-              borderRadius: 1.5,
+              borderRadius: 2,
+              fontSize: "14px",
               "& .MuiOutlinedInput-notchedOutline": { borderColor: "#2b2d3d" },
+              "& :hover .MuiOutlinedInput-notchedOutline": {
+                borderColor: "#475569",
+              },
             }}
           >
             <MenuItem value="" disabled>
@@ -202,7 +276,14 @@ function TaskPanel({ task }: TaskPanelProps) {
         </Box>
 
         <Box>
-          <Typography sx={{ color: "#94a3b8", fontSize: "12px", mb: 0.5 }}>
+          <Typography
+            sx={{
+              color: "#94a3b8",
+              fontSize: "12px",
+              mb: 0.8,
+              fontWeight: 500,
+            }}
+          >
             Assignee
           </Typography>
           <Select
@@ -216,8 +297,12 @@ function TaskPanel({ task }: TaskPanelProps) {
             sx={{
               bgcolor: "#252632",
               color: "#fff",
-              borderRadius: 1.5,
+              borderRadius: 2,
+              fontSize: "14px",
               "& .MuiOutlinedInput-notchedOutline": { borderColor: "#2b2d3d" },
+              "& :hover .MuiOutlinedInput-notchedOutline": {
+                borderColor: "#475569",
+              },
             }}
           >
             <MenuItem value="">Unassigned</MenuItem>
@@ -230,7 +315,14 @@ function TaskPanel({ task }: TaskPanelProps) {
         </Box>
 
         <Box>
-          <Typography sx={{ color: "#94a3b8", fontSize: "12px", mb: 0.5 }}>
+          <Typography
+            sx={{
+              color: "#94a3b8",
+              fontSize: "12px",
+              mb: 0.8,
+              fontWeight: 500,
+            }}
+          >
             Tag
           </Typography>
           <Select
@@ -244,8 +336,12 @@ function TaskPanel({ task }: TaskPanelProps) {
             sx={{
               bgcolor: "#252632",
               color: "#fff",
-              borderRadius: 1.5,
+              borderRadius: 2,
+              fontSize: "14px",
               "& .MuiOutlinedInput-notchedOutline": { borderColor: "#2b2d3d" },
+              "& :hover .MuiOutlinedInput-notchedOutline": {
+                borderColor: "#475569",
+              },
             }}
           >
             <MenuItem value="">No Tag</MenuItem>
@@ -263,12 +359,14 @@ function TaskPanel({ task }: TaskPanelProps) {
         variant="contained"
         onClick={handleSave}
         sx={{
-          mt: 2,
+          mt: "auto",
           bgcolor: "#3b82f6",
           textTransform: "none",
           fontWeight: 600,
-          p: 1,
-          borderRadius: 2,
+          p: 1.2,
+          borderRadius: 2.5,
+          boxShadow: "none",
+          "&:hover": { bgcolor: "#2563eb", boxShadow: "none" },
         }}
       >
         Save Changes

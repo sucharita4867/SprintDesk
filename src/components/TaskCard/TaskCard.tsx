@@ -1,4 +1,4 @@
-import { Box, Typography, Card, Button, Stack, Chip } from "@mui/material";
+import {  Typography, Card, Button, Chip } from "@mui/material";
 import { useBoardStore } from "../../store/BoardStore";
 import type { Task } from "../../types/Task";
 
@@ -11,9 +11,9 @@ function TaskCard({ task, onClick }: TaskCardProps) {
   const deleteTask = useBoardStore((state) => state.deleteTask);
 
   const priorityConfig = {
-    high: { color: "#ef4444", bg: "rgba(239, 68, 68, 0.1)" },
-    medium: { color: "#f59e0b", bg: "rgba(245, 158, 11, 0.1)" },
-    low: { color: "#10b981", bg: "rgba(16, 185, 129, 0.1)" }
+    high: { color: "#ef4444", bg: "rgba(239, 68, 68, 0.15)" },
+    medium: { color: "#f59e0b", bg: "rgba(245, 158, 11, 0.15)" },
+    low: { color: "#10b981", bg: "rgba(16, 185, 129, 0.15)" }
   };
 
   const currentPriority = priorityConfig[task.priority] || priorityConfig.low;
@@ -38,8 +38,8 @@ function TaskCard({ task, onClick }: TaskCardProps) {
         "&:active": { cursor: "grabbing" }
       }}
     >
-      <Stack direction="row" justifyContent="space-between" alignItems="flex-start" spacing={1}>
-        <Typography sx={{ color: "#fff", fontSize: "14px", fontWeight: 600, lineHeight: 1.4 }}>
+      <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start", gap: "8px" }}>
+        <Typography sx={{ color: "#fff", fontSize: "16px", fontWeight: 600, lineHeight: 1.4 }}>
           {task.title}
         </Typography>
         <Chip 
@@ -48,39 +48,43 @@ function TaskCard({ task, onClick }: TaskCardProps) {
           sx={{ 
             color: currentPriority.color, 
             bgcolor: currentPriority.bg, 
-            fontSize: "10px", 
+            fontSize: "11px", 
             fontWeight: 700,
             textTransform: "uppercase",
             borderRadius: 1.5,
-            height: "20px"
+            height: "22px"
           }} 
         />
-      </Stack>
+      </div>
 
       {task.description && (
-        <Typography sx={{ color: "#94a3b8", fontSize: "12px", lineHeight: 1.5 }}>
+        <Typography sx={{ color: "#94a3b8", fontSize: "14px", lineHeight: 1.5 }}>
           {task.description}
         </Typography>
       )}
 
-      <Stack 
-        direction="row" 
-        justifyContent="space-between" 
-        alignItems="center" 
-        sx={{ pt: 1.5, borderTop: "1px solid #2b2d3d", mt: 0.5 }}
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          paddingTop: "12px",
+          borderTop: "1px solid #2b2d3d",
+          marginTop: "4px"
+        }}
       >
-        <Stack direction="row" alignItems="center" spacing={0.5} sx={{ color: "#64748b" }}>
-          {/* Custom Calendar Icon Path without package dependency */}
+        <div style={{ display: "flex", flexDirection: "row", alignItems: "center", gap: "6px" }}>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
             <line x1="16" y1="2" x2="16" y2="6"></line>
             <line x1="8" y1="2" x2="8" y2="6"></line>
             <line x1="3" y1="10" x2="21" y2="10"></line>
           </svg>
-          <Typography sx={{ fontSize: "11px", color: "#cbd5e1" }}>
+          <Typography sx={{ fontSize: "12px", color: "#cbd5e1" }}>
             {task.dueDate || "No Date"}
           </Typography>
-        </Stack>
+        </div>
 
         <Button
           size="small"
@@ -90,7 +94,7 @@ function TaskCard({ task, onClick }: TaskCardProps) {
           }}
           sx={{ 
             color: "#ef4444", 
-            fontSize: "11px", 
+            fontSize: "12px", 
             textTransform: "none",
             minWidth: "auto",
             p: 0,
@@ -100,14 +104,14 @@ function TaskCard({ task, onClick }: TaskCardProps) {
             "&:hover": { bgcolor: "transparent", color: "#f87171" }
           }}
         >
-          {/* Custom Trash Icon Path */}
+          {/* SVG Trash Icon */}
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="3 6 5 6 21 6"></polyline>
             <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
           </svg>
           Delete
         </Button>
-      </Stack>
+      </div>
     </Card>
   );
 }
