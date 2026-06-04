@@ -49,6 +49,17 @@ function App() {
     );
   }
 
+  // due date sort
+  else if (sortBy === "dueDate") {
+    sortedTasks.sort((a, b) => {
+      const dateA = a.dueDate ? new Date(a.dueDate).getTime() : Infinity;
+
+      const dateB = b.dueDate ? new Date(b.dueDate).getTime() : Infinity;
+
+      return dateA - dateB;
+    });
+  }
+
   const backlogTasks = sortedTasks.filter((task) => task.column === "backlog");
 
   const inProgressTasks = sortedTasks.filter(
@@ -139,6 +150,7 @@ function App() {
           <option value="default">Default</option>
 
           <option value="priority">Priority</option>
+          <option value="dueDate">Due Date</option>
         </select>
 
         <button onClick={handleClearFilters}>Clear Filters</button>

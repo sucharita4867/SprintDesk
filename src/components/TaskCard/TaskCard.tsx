@@ -23,6 +23,7 @@ function TaskCard({ task, onClick }: TaskCardProps) {
     >
       <h4>{task.title}</h4>
       <p>Priority: {task.priority}</p>
+      <p>Due: {task.dueDate || "No Date"}</p>
       <h4>{task.description}</h4>
       <button
         onClick={(e) => {

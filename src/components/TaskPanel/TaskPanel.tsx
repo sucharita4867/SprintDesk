@@ -32,6 +32,7 @@ function TaskPanel({ task }: TaskPanelProps) {
       setDescription("");
       setPriority("low");
       setAssigneeId("");
+      setDueDate("");
       return;
     }
 
@@ -40,6 +41,7 @@ function TaskPanel({ task }: TaskPanelProps) {
     setPriority(task.priority || "low");
     setAssigneeId(task.assigneeId || "");
     setTagId(task.tagId || "");
+    setDueDate(task.dueDate || "");
   }, [task]);
 
   if (!task) return null;
@@ -51,6 +53,7 @@ function TaskPanel({ task }: TaskPanelProps) {
       priority,
       assigneeId,
       tagId,
+      dueDate,
     });
   };
 
@@ -80,7 +83,7 @@ function TaskPanel({ task }: TaskPanelProps) {
           onChange={(e) => setTitle(e.target.value)}
           style={{
             width: "100%",
-            padding: "8px",
+            padding: "4px",
             marginTop: "5px",
             marginBottom: "15px",
           }}
@@ -97,7 +100,7 @@ function TaskPanel({ task }: TaskPanelProps) {
           style={{
             width: "100%",
             minHeight: "50px",
-            padding: "8px",
+            padding: "4px",
             marginTop: "5px",
             marginBottom: "15px",
           }}
@@ -115,8 +118,8 @@ function TaskPanel({ task }: TaskPanelProps) {
           }
           style={{
             width: "100%",
-            padding: "8px",
-            marginTop: "5px",
+            padding: "4px",
+            marginTop: "2px",
             marginBottom: "15px",
           }}
         >
@@ -124,6 +127,22 @@ function TaskPanel({ task }: TaskPanelProps) {
           <option value="medium">Medium</option>
           <option value="high">High</option>
         </select>
+      </div>
+
+      <div>
+        <label>Due Date</label>
+
+        <input
+          type="date"
+          value={dueDate}
+          onChange={(e) => setDueDate(e.target.value)}
+          style={{
+            width: "100%",
+            padding: "4px",
+            marginTop: "2px",
+            marginBottom: "15px",
+          }}
+        />
       </div>
 
       {/* Move To */}
@@ -135,8 +154,8 @@ function TaskPanel({ task }: TaskPanelProps) {
           onChange={(e) => moveTask(task.id, e.target.value as Task["column"])}
           style={{
             width: "100%",
-            padding: "8px",
-            marginTop: "5px",
+            padding: "4px",
+            marginTop: "2px",
             marginBottom: "15px",
           }}
         >
@@ -169,8 +188,8 @@ function TaskPanel({ task }: TaskPanelProps) {
           }}
           style={{
             width: "100%",
-            padding: "8px",
-            marginTop: "5px",
+            padding: "2px",
+            marginTop: "2px",
             marginBottom: "15px",
           }}
         >
@@ -195,8 +214,8 @@ function TaskPanel({ task }: TaskPanelProps) {
           }}
           style={{
             width: "100%",
-            padding: "8px",
-            marginTop: "5px",
+            padding: "2px",
+            marginTop: "2px",
             marginBottom: "15px",
           }}
         >
