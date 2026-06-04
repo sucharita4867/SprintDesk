@@ -91,7 +91,7 @@ function App() {
         minHeight: "100vh",
         bgcolor: "#15161e",
         color: "#f5f5f7",
-        p: 4,
+        p: 3,
         pt: 2,
       }}
     >

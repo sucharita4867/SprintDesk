@@ -1,73 +1,104 @@
-# React + TypeScript + Vite
+# SprintDesk
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+SprintDesk is a Kanban-style task management application built with React, TypeScript, Zustand, and Material UI.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### Board Management
 
-## React Compiler
+* Three columns:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+  * Backlog
+  * In Progress
+  * Done
+* Add new tasks directly into any column
+* Live task count for each column
+* Drag and drop tasks between columns
 
-## Expanding the ESLint configuration
+### Task Management
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+* Create tasks
+* Edit task title
+* Edit description
+* Edit priority
+* Set due date
+* Delete tasks
+* Move tasks between columns
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### Search & Filtering
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+* Search tasks by title
+* 300ms debounced search
+* Filter by priority
+* Filter by assignee
+* Filter by tag
+* Clear all filters
+* Active filter count
+* No results state message
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Sorting
+
+* Sort tasks by priority
+* Sort tasks by due date
+
+### Assignees & Tags
+
+* Assign tasks to team members
+* Add and manage tags
+* Filter tasks by assignee and tag
+
+### Persistence
+
+* Zustand state management
+* Data persisted in localStorage
+* Tasks are restored after page reload
+
+## Tech Stack
+
+* React 18
+* TypeScript
+* Vite
+* Zustand
+* Material UI (MUI)
+
+## Installation
+
+```bash
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Run Development Server
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm run dev
 ```
+
+## Build Project
+
+```bash
+npm run build
+```
+
+## Project Structure
+
+```text
+src/
+├── components/
+├── store/
+├── data/
+├── types/
+├── App.tsx
+└── main.tsx
+```
+
+## Assumptions
+
+* Tasks are stored in localStorage using Zustand Persist.
+* Due dates can be assigned and sorted.
+* Search and filter states reset on page reload.
+* Drag and drop is implemented using the native HTML5 Drag and Drop API.
+
+## Author
+
+Your Name
+Sucharita Sardar
