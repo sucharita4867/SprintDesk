@@ -23,8 +23,8 @@ function TaskPanel({ task }: TaskPanelProps) {
   const [priority, setPriority] = useState<"low" | "medium" | "high">("low");
 
   const [assigneeId, setAssigneeId] = useState("");
-
   const [tagId, setTagId] = useState("");
+  const [dueDate, setDueDate] = useState("");
 
   useEffect(() => {
     if (!task) {

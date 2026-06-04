@@ -16,6 +16,8 @@ function App() {
 
   const [tagFilter, setTagFilter] = useState("all");
 
+  const [sortBy, setSortBy] = useState("default");
+
   const filteredTasks = tasks.filter((task) => {
     const matchesSearch = task.title
       .toLowerCase()
@@ -32,15 +34,28 @@ function App() {
     return matchesSearch && matchesPriority && matchesAssignee && matchesTag;
   });
 
-  const backlogTasks = filteredTasks.filter(
-    (task) => task.column === "backlog",
-  );
+  const sortedTasks = [...filteredTasks];
 
-  const inProgressTasks = filteredTasks.filter(
+  if (sortBy === "priority") {
+    const priorityOrder = {
+      high: 3,
+      medium: 2,
+      low: 1,
+    };
+    // console.log(sortedTasks.map((task) => `${task.title} - ${task.priority}`));
+
+    sortedTasks.sort(
+      (a, b) => priorityOrder[b.priority] - priorityOrder[a.priority],
+    );
+  }
+
+  const backlogTasks = sortedTasks.filter((task) => task.column === "backlog");
+
+  const inProgressTasks = sortedTasks.filter(
     (task) => task.column === "inProgress",
   );
 
-  const doneTasks = filteredTasks.filter((task) => task.column === "done");
+  const doneTasks = sortedTasks.filter((task) => task.column === "done");
 
   const assignees = useBoardStore((state) => state.assignees);
 
@@ -50,6 +65,12 @@ function App() {
   const handleTaskClick = (task: Task) => {
     setSelectedTask(task);
   };
+
+  const activeFilterCount =
+    (searchText ? 1 : 0) +
+    (priorityFilter !== "all" ? 1 : 0) +
+    (assigneeFilter !== "all" ? 1 : 0) +
+    (tagFilter !== "all" ? 1 : 0);
 
   // Clear Filters
   const handleClearFilters = () => {
@@ -113,8 +134,15 @@ function App() {
             </option>
           ))}
         </select>
+        {/* sort */}
+        <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+          <option value="default">Default</option>
+
+          <option value="priority">Priority</option>
+        </select>
 
         <button onClick={handleClearFilters}>Clear Filters</button>
+        <span>Active Filters: {activeFilterCount}</span>
       </div>
 
       {filteredTasks.length === 0 && (
