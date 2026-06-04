@@ -1,57 +1,66 @@
 # SprintDesk
 
-SprintDesk is a Kanban-style task management application built with React, TypeScript, Zustand, and Material UI.
+SprintDesk is a Kanban-style task management application built with React, TypeScript, Zustand, and Material UI. The application helps users organize tasks efficiently using a drag-and-drop workflow across multiple stages.
+
+## Live Demo
+
+* Live Site: https://sprintdesk-13.netlify.app/
+* GitHub Repository: https://github.com/sucharita4867/SprintDesk
 
 ## Features
 
 ### Board Management
 
-* Three columns:
+* Three workflow columns:
 
   * Backlog
   * In Progress
   * Done
-* Add new tasks directly into any column
+* Add tasks directly to any column
 * Live task count for each column
 * Drag and drop tasks between columns
+* Move tasks using the task detail panel
 
 ### Task Management
 
-* Create tasks
+* Create new tasks
 * Edit task title
-* Edit description
-* Edit priority
-* Set due date
+* Edit task description
+* Update task priority
+* Set and update due dates
 * Delete tasks
-* Move tasks between columns
+* View task details in a side panel
 
-### Search & Filtering
+### Search, Filter & Sort
 
 * Search tasks by title
 * 300ms debounced search
 * Filter by priority
 * Filter by assignee
 * Filter by tag
-* Clear all filters
-* Active filter count
-* No results state message
+* Clear all filters with a single click
+* Active filter count display
+* No matching results state
 
 ### Sorting
 
 * Sort tasks by priority
 * Sort tasks by due date
+* Default task ordering
 
 ### Assignees & Tags
 
-* Assign tasks to team members
-* Add and manage tags
-* Filter tasks by assignee and tag
+* Assign team members to tasks
+* Manage task tags
+* Filter tasks by assignee
+* Filter tasks by tag
 
 ### Persistence
 
 * Zustand state management
-* Data persisted in localStorage
-* Tasks are restored after page reload
+* Zustand Persist middleware
+* Data stored in localStorage
+* Tasks restored automatically after page refresh
 
 ## Tech Stack
 
@@ -59,7 +68,9 @@ SprintDesk is a Kanban-style task management application built with React, TypeS
 * TypeScript
 * Vite
 * Zustand
+* Zustand Persist
 * Material UI (MUI)
+* Native HTML5 Drag and Drop API
 
 ## Installation
 
@@ -84,6 +95,10 @@ npm run build
 ```text
 src/
 ├── components/
+│   ├── Column/
+│   ├── TaskCard/
+│   ├── TaskPanel/
+│
 ├── store/
 ├── data/
 ├── types/
@@ -93,12 +108,12 @@ src/
 
 ## Assumptions
 
-* Tasks are stored in localStorage using Zustand Persist.
-* Due dates can be assigned and sorted.
-* Search and filter states reset on page reload.
+* Tasks are persisted using Zustand Persist and localStorage.
+* Search and filter states reset after page reload.
 * Drag and drop is implemented using the native HTML5 Drag and Drop API.
+* Due dates can be assigned and sorted.
+* Assignees and tags are shared across tasks.
 
 ## Author
 
-Your Name
-Sucharita Sardar
+**Sucharita Sardar**
