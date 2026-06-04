@@ -4,6 +4,8 @@ import { seedTasks } from "../data/seedTasks";
 import type { Task } from "../types/Task";
 import type { Assignee } from "../types/Assignee";
 import { seedAssignees } from "../data/seedAssignees";
+import type { Tag } from "../types/Tag";
+import { seedTags } from "../data/seedTags";
 
 interface BoardStore {
   tasks: Task[];
@@ -14,6 +16,9 @@ interface BoardStore {
   reorderTask: (taskId: string, newColumn: Task["column"]) => void;
   assignees: Assignee[];
   assignTask: (taskId: string, assigneeId: string) => void;
+  tags: Tag[];
+
+  assignTag: (taskId: string, tagId: string) => void;
 }
 
 export const useBoardStore = create<BoardStore>()(
@@ -21,6 +26,7 @@ export const useBoardStore = create<BoardStore>()(
     (set) => ({
       tasks: seedTasks,
       assignees: seedAssignees,
+      tags: seedTags,
       addTask: (column) =>
         set((state) => ({
           tasks: [
@@ -60,6 +66,12 @@ export const useBoardStore = create<BoardStore>()(
         set((state) => ({
           tasks: state.tasks.map((task) =>
             task.id === taskId ? { ...task, assigneeId } : task,
+          ),
+        })),
+      assignTag: (taskId, tagId) =>
+        set((state) => ({
+          tasks: state.tasks.map((task) =>
+            task.id === taskId ? { ...task, tagId } : task,
           ),
         })),
     }),

@@ -14,11 +14,17 @@ function TaskPanel({ task }: TaskPanelProps) {
 
   const assignTask = useBoardStore((state) => state.assignTask);
 
+  const tags = useBoardStore((state) => state.tags);
+
+  const assignTag = useBoardStore((state) => state.assignTag);
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [priority, setPriority] = useState<"low" | "medium" | "high">("low");
 
   const [assigneeId, setAssigneeId] = useState("");
+
+  const [tagId, setTagId] = useState("");
 
   useEffect(() => {
     if (!task) {
@@ -33,7 +39,9 @@ function TaskPanel({ task }: TaskPanelProps) {
     setDescription(task.description || "");
     setPriority(task.priority || "low");
     setAssigneeId(task.assigneeId || "");
+    setTagId(task.tagId || "");
   }, [task]);
+
   if (!task) return null;
 
   const handleSave = () => {
@@ -42,6 +50,7 @@ function TaskPanel({ task }: TaskPanelProps) {
       description,
       priority,
       assigneeId,
+      tagId,
     });
   };
 
@@ -87,7 +96,7 @@ function TaskPanel({ task }: TaskPanelProps) {
           onChange={(e) => setDescription(e.target.value)}
           style={{
             width: "100%",
-            minHeight: "120px",
+            minHeight: "50px",
             padding: "8px",
             marginTop: "5px",
             marginBottom: "15px",
@@ -174,7 +183,32 @@ function TaskPanel({ task }: TaskPanelProps) {
           ))}
         </select>
       </div>
+      <div>
+        <label>Tag</label>
 
+        <select
+          value={tagId}
+          onChange={(e) => {
+            setTagId(e.target.value);
+
+            assignTag(task.id, e.target.value);
+          }}
+          style={{
+            width: "100%",
+            padding: "8px",
+            marginTop: "5px",
+            marginBottom: "15px",
+          }}
+        >
+          <option value="">No Tag</option>
+
+          {tags.map((tag) => (
+            <option key={tag.id} value={tag.id}>
+              {tag.name}
+            </option>
+          ))}
+        </select>
+      </div>
       <button onClick={handleSave}>Save</button>
     </div>
   );
