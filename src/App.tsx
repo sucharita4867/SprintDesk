@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Column from "./components/Column/Column";
 import TaskPanel from "./components/TaskPanel/TaskPanel";
 import { useBoardStore } from "./store/BoardStore";
@@ -10,6 +10,7 @@ function App() {
   const [selectedTask, setSelectedTask] = useState<Task | null>(null);
 
   const [searchText, setSearchText] = useState("");
+  const [debouncedSearch, setDebouncedSearch] = useState("");
   const [priorityFilter, setPriorityFilter] = useState("all");
 
   const [assigneeFilter, setAssigneeFilter] = useState("all");
@@ -21,7 +22,7 @@ function App() {
   const filteredTasks = tasks.filter((task) => {
     const matchesSearch = task.title
       .toLowerCase()
-      .includes(searchText.toLowerCase());
+      .includes(debouncedSearch.toLowerCase());
 
     const matchesPriority =
       priorityFilter === "all" || task.priority === priorityFilter;
@@ -33,6 +34,14 @@ function App() {
 
     return matchesSearch && matchesPriority && matchesAssignee && matchesTag;
   });
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearch(searchText);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [searchText]);
 
   const sortedTasks = [...filteredTasks];
 
