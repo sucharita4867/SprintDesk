@@ -79,4 +79,4 @@ export const useBoardStore = create<BoardStore>()(
       name: "sprintdesk-storage",
     },
   ),
-)
+),
