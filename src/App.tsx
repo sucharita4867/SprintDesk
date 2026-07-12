@@ -8,6 +8,7 @@ import {
   Button,
   Typography,
   InputAdornment,
+  SelectChangeEvent,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import Column from "./components/Column/Column";
@@ -88,6 +89,25 @@ function App() {
     setTagFilter("all");
   };
 
+  /* ------------------------------------------------------------
+     এখানে explicit handler ফাংশন তৈরি করে টাইপ এরর দূর করা হয়েছে
+     ------------------------------------------------------------ */
+  const handlePriorityFilterChange = (e: SelectChangeEvent<string>) => {
+    setPriorityFilter(e.target.value);
+  };
+
+  const handleAssigneeFilterChange = (e: SelectChangeEvent<string>) => {
+    setAssigneeFilter(e.target.value);
+  };
+
+  const handleTagFilterChange = (e: SelectChangeEvent<string>) => {
+    setTagFilter(e.target.value);
+  };
+
+  const handleSortByChange = (e: SelectChangeEvent<string>) => {
+    setSortBy(e.target.value);
+  };
+
   const isPanelOpen = selectedTask !== null;
 
   return (
@@ -145,7 +165,7 @@ function App() {
         <TextField
           placeholder="Search tasks..."
           value={searchText}
-          onChange={(e: any) => setSearchText(e.target.value)}
+          onChange={(e) => setSearchText(e.target.value)}
           size="small"
           slotProps={{
             input: {
@@ -175,7 +195,7 @@ function App() {
         >
           <Select
             value={priorityFilter}
-            onChange={(e: any) => setPriorityFilter(e.target.value)}
+            onChange={handlePriorityFilterChange}
             size="small"
             sx={{
               bgcolor: "#252632",
@@ -195,7 +215,7 @@ function App() {
 
           <Select
             value={assigneeFilter}
-            onChange={(e: any) => setAssigneeFilter(e.target.value)}
+            onChange={handleAssigneeFilterChange}
             size="small"
             sx={{
               bgcolor: "#252632",
@@ -217,7 +237,7 @@ function App() {
 
           <Select
             value={tagFilter}
-            onChange={(e: any) => setTagFilter(e.target.value)}
+            onChange={handleTagFilterChange}
             size="small"
             sx={{
               bgcolor: "#252632",
@@ -239,7 +259,7 @@ function App() {
 
           <Select
             value={sortBy}
-            onChange={(e: any) => setSortBy(e.target.value)}
+            onChange={handleSortByChange}
             size="small"
             sx={{
               bgcolor: "#252632",
