@@ -89,9 +89,6 @@ function App() {
     setTagFilter("all");
   };
 
-  /* ------------------------------------------------------------
-     এখানে explicit handler ফাংশন তৈরি করে টাইপ এরর দূর করা হয়েছে
-     ------------------------------------------------------------ */
   const handlePriorityFilterChange = (e: SelectChangeEvent<string>) => {
     setPriorityFilter(e.target.value);
   };
