@@ -45,8 +45,13 @@ function App() {
   }, [searchText]);
 
   const sortedTasks = [...filteredTasks];
+
   if (sortBy === "priority") {
-    const priorityOrder = { high: 3, medium: 2, low: 1 };
+    const priorityOrder: Record<"low" | "medium" | "high", number> = {
+      high: 3,
+      medium: 2,
+      low: 1,
+    };
     sortedTasks.sort(
       (a, b) => priorityOrder[b.priority] - priorityOrder[a.priority],
     );
@@ -123,7 +128,7 @@ function App() {
       <div
         style={{
           display: "flex",
-          flexDirection: window.innerWidth < 900 ? "column" : "row",
+          flexDirection: "row",
           gap: "16px",
           alignItems: "center",
           backgroundColor: "#1e1f29",
@@ -140,7 +145,7 @@ function App() {
         <TextField
           placeholder="Search tasks..."
           value={searchText}
-          onChange={(e) => setSearchText(e.target.value)}
+          onChange={(e: any) => setSearchText(e.target.value)}
           size="small"
           slotProps={{
             input: {
@@ -170,7 +175,7 @@ function App() {
         >
           <Select
             value={priorityFilter}
-            onChange={(e) => setPriorityFilter(e.target.value)}
+            onChange={(e: any) => setPriorityFilter(e.target.value)}
             size="small"
             sx={{
               bgcolor: "#252632",
@@ -190,7 +195,7 @@ function App() {
 
           <Select
             value={assigneeFilter}
-            onChange={(e) => setAssigneeFilter(e.target.value)}
+            onChange={(e: any) => setAssigneeFilter(e.target.value)}
             size="small"
             sx={{
               bgcolor: "#252632",
@@ -212,7 +217,7 @@ function App() {
 
           <Select
             value={tagFilter}
-            onChange={(e) => setTagFilter(e.target.value)}
+            onChange={(e: any) => setTagFilter(e.target.value)}
             size="small"
             sx={{
               bgcolor: "#252632",
@@ -234,7 +239,7 @@ function App() {
 
           <Select
             value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
+            onChange={(e: any) => setSortBy(e.target.value)}
             size="small"
             sx={{
               bgcolor: "#252632",
@@ -256,8 +261,7 @@ function App() {
           style={{
             display: "flex",
             justifyContent: "space-between",
-            marginLeft: window.innerWidth < 900 ? "0px" : "auto",
-            width: window.innerWidth < 900 ? "100%" : "auto",
+            marginLeft: "auto",
             boxSizing: "border-box",
           }}
         >
@@ -324,7 +328,7 @@ function App() {
       <div
         style={{
           display: "flex",
-          flexDirection: window.innerWidth < 900 ? "column" : "row",
+          flexWrap: "wrap",
           gap: "24px",
           alignItems: "flex-start",
           width: isPanelOpen ? "calc(100% - 380px)" : "100%",
