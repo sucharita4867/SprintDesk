@@ -141,7 +141,6 @@ function App() {
         </Typography>
       </Box>
 
-      {/* SEARCH AND FILTER BAR CONTROLLER */}
       <div
         style={{
           display: "flex",
