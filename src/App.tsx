@@ -340,7 +340,6 @@ function App() {
         </Box>
       )}
 
-      {/* DYNAMIC COLUMNS CONTAINER BLOCK */}
       <div
         style={{
           display: "flex",
