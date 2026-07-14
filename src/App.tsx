@@ -335,7 +335,7 @@ function App() {
           }}
         >
           <Typography variant="h6" sx={{ color: "#94a3b8" }}>
-            No tasks match your filters.
+            No tasks match your filters
           </Typography>
         </Box>
       )}
