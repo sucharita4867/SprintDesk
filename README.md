@@ -42,7 +42,7 @@ SprintDesk is a Kanban-style task management application built with React, TypeS
 * Active filter count display
 * No matching results state
 
-## Sorting
+# Sorting
 
 * Sort tasks by priority
 * Sort tasks by due date
